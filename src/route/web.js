@@ -7,6 +7,7 @@ let router = express.Router();
 let initWebRoutes = (app) => {
   router.get("/", homeController.getHomePage);
 
+  router.post("/api/signup", userController.handleSignup);
   router.post("/api/login", userController.handleLogin);
 
   return app.use("/", router);

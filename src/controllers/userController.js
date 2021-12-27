@@ -1,5 +1,11 @@
 import userService from "../services/userService";
 
+let handleSignup = async (req, res) => {
+  let message = await userService.handleSignup(req.body);
+  console.log(message);
+  return res.send("Signup");
+};
+
 let handleLogin = async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
@@ -22,4 +28,5 @@ let handleLogin = async (req, res) => {
 
 module.exports = {
   handleLogin: handleLogin,
+  handleSignup: handleSignup,
 };

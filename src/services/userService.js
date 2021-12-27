@@ -1,5 +1,38 @@
 import db from "../models/index";
-import bcrypt, { compareSync } from "bcryptjs";
+import bcrypt from "bcryptjs";
+
+const salt = bcrypt.genSaltSync(10);
+
+let handleSignup = async (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let hashPasswordFtomBcrypt = await hashUserPassword(data.password);
+      await db.User.create({
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        address: data.address,
+        username: data.username,
+        password: hashPasswordFtomBcrypt,
+      });
+
+      resolve("Ok ! Create a new user");
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let hashUserPassword = (password) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let hashPassword = await bcrypt.hashSync(password, salt);
+      resolve(hashPassword);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 
 let handleLogin = (username, password) => {
   return new Promise(async (resolve, reject) => {
@@ -65,4 +98,5 @@ let checkUsername = (username) => {
 
 module.exports = {
   handleLogin: handleLogin,
+  handleSignup: handleSignup,
 };
