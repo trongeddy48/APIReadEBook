@@ -9,16 +9,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Publisher.belongsTo(models.Document, {
+        foreignKey: "publisherId",
+        as: "publisherData",
+      });
     }
   }
   Publisher.init(
     {
       namePublisher: DataTypes.STRING,
-      address: DataTypes.STRING
+      address: DataTypes.STRING,
     },
     {
       sequelize,
       modelName: "Publisher",
+      freezeTableName: true,
     }
   );
   return Publisher;

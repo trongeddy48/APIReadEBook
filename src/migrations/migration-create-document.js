@@ -20,6 +20,12 @@ module.exports = {
       publisherId: {
         type: Sequelize.INTEGER,
       },
+      authorId: {
+        type: Sequelize.INTEGER,
+      },
+      categoryId: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

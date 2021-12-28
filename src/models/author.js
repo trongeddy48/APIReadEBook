@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Author.belongsTo(models.Document, { foreignKey: 'authorId', as: 'authorData' });
     }
   };
   Author.init({
@@ -19,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Author',
+    freezeTableName: true,
   });
   return Author;
 };

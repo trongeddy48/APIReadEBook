@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Category.belongsTo(models.Document, { foreignKey: 'categoryId', as: 'categoryData' })
     }
   };
   Category.init({
@@ -19,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Category',
+    freezeTableName: true,
   });
   return Category;
 };
