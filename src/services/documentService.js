@@ -14,18 +14,25 @@ let getListDocuments = () => {
         include: [
           {
             model: db.Publisher,
+            required: true,
             as: "publisherData",
             attributes: ["namePublisher"],
+            // where: db.Document.publisherId === db.Publisher.id,
           },
           {
+            where: db.Document.authorId === db.Author.id,
             model: db.Author,
+            required: true,
             as: "authorData",
             attributes: ["nameAuthor"],
+            // where: db.Document.authorId === db.Author.id,
           },
           {
             model: db.Category,
+            required: true,
             as: "categoryData",
             attributes: ["nameCategory"],
+            // where: db.Document.categoryId === db.Category.id,
           },
         ],
         raw: true,

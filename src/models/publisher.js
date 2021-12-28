@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Publisher.belongsTo(models.Document, {
+      Publisher.hasMany(models.Document, {
         foreignKey: "publisherId",
         as: "publisherData",
       });

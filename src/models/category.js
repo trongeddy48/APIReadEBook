@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Category.belongsTo(models.Document, { foreignKey: 'categoryId', as: 'categoryData' })
+      Category.hasMany(models.Document, { foreignKey: 'categoryId', as: 'categoryData' })
     }
   };
   Category.init({
