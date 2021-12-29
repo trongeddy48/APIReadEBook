@@ -9,9 +9,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Document.hasOne(models.Publisher, { foreignKey: 'id', targetKey: 'namePublisher', as: 'publisherData' });
-      Document.hasOne(models.Author, { foreignKey: 'id', targetKey: 'nameAuthor', as: 'authorData' });
-      Document.hasOne(models.Category, { foreignKey: 'id', targetKey: 'nameCategory', as: 'categoryData' });
+      Document.belongsTo(models.Publisher, {
+        foreignKey: "publisherId",
+        targetKey: "id",
+        as: "publisherData",
+      });
+      Document.belongsTo(models.Author, {
+        foreignKey: "authorId",
+        targetKey: "id",
+        as: "authorData",
+      });
+      Document.belongsTo(models.Category, {
+        foreignKey: "categoryId",
+        targetKey: "id",
+        as: "categoryData",
+      });
     }
   }
   Document.init(

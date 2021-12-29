@@ -4,35 +4,41 @@ let getListDocuments = () => {
   return new Promise(async (resolve, reject) => {
     try {
       let docs = await db.Document.findAll({
+        where:
+          db.Document.publisherId == db.Publisher.id &&
+          db.authorId == db.Author.id &&
+          db.categoryId == db.Category.id,
+
         attributes: [
+          "id",
           "nameDocument",
           "pageNumber",
           "publisherId",
           "authorId",
           "categoryId",
         ],
+
         include: [
           {
             model: db.Publisher,
             required: true,
             as: "publisherData",
             attributes: ["namePublisher"],
-            // where: db.Document.publisherId === db.Publisher.id,
+            where: db.Document.publisherId == db.Publisher.id,
           },
           {
-            where: db.Document.authorId === db.Author.id,
             model: db.Author,
             required: true,
             as: "authorData",
             attributes: ["nameAuthor"],
-            // where: db.Document.authorId === db.Author.id,
+            where: db.Document.authorId == db.Author.id,
           },
           {
             model: db.Category,
             required: true,
             as: "categoryData",
             attributes: ["nameCategory"],
-            // where: db.Document.categoryId === db.Category.id,
+            where: db.Document.categoryId == db.Category.id,
           },
         ],
         raw: true,

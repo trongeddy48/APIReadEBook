@@ -3,7 +3,10 @@ import userService from "../services/userService";
 let handleSignup = async (req, res) => {
   let message = await userService.handleSignup(req.body);
   console.log(message);
-  return res.send("Signup");
+  return res.status(200).json({
+    errCode: 0,
+    errMessage: "Ok",
+  });
 };
 
 let handleLogin = async (req, res) => {
@@ -65,6 +68,49 @@ let deleteUser = async (req, res) => {
   }
 };
 
+let handleGetAllUsers = async (req, res) => {
+  let id = req.query.id;
+
+  if (!id) {
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "Missing Id",
+      users: [],
+    });
+  }
+
+  let users = await userService.getAllUsers(id);
+
+  return res.status(200).json({
+    errCode: 0,
+    errMessage: "Ok",
+    users,
+  });
+};
+
+let handleCreateNewUser = async (req, res) => {
+  let message = await userService.createNewUser(req.body);
+  console.log(message);
+  return res.status(200).json(message);
+}
+
+let handleEditUser = async (req, res) => {
+  let data = req.body;
+  let message = await userService.editUser(data);
+  return res.status(200).json(message);
+}
+
+let handleDeleteUser = async (req, res) => {
+  if(!req.body.id) {
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "Missing Id"
+    })
+  }
+  let message = await userService.deleteUser(req.body.id);
+  return res.status(200).json(message);
+}
+
 module.exports = {
   handleLogin: handleLogin,
   handleSignup: handleSignup,
@@ -72,4 +118,9 @@ module.exports = {
   getEditUser: getEditUser,
   updateUser: updateUser,
   deleteUser: deleteUser,
+
+  handleGetAllUsers: handleGetAllUsers,
+  handleCreateNewUser: handleCreateNewUser,
+  handleEditUser: handleEditUser,
+  handleDeleteUser: handleDeleteUser,
 };

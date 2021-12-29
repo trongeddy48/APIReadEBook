@@ -157,7 +157,7 @@ let deleteUserById = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
       let user = await db.User.findOne({
-        where: { id: userId }
+        where: { id: userId },
       });
       if (user) {
         await user.destroy();
@@ -169,6 +169,122 @@ let deleteUserById = (userId) => {
   });
 };
 
+let getAllUsers = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let users = "";
+      if (userId === "ALL") {
+        users = await db.User.findAll({
+          attributes: {
+            exclude: ["password"],
+          },
+        });
+      }
+      if (userId && userId !== "ALL") {
+        users = await db.User.findOne({
+          where: { id: userId },
+          attributes: {
+            exclude: ["password"],
+          },
+        });
+      }
+      resolve(users);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let createNewUser = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let check = await checkUsername(data.username);
+      if (check === true) {
+        resolve({
+          errCode: 1,
+          errMessage: "Username already exist",
+        });
+      }else {
+        let hashPasswordFtomBcrypt = await hashUserPassword(data.password);
+        await db.User.create({
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          address: data.address,
+          username: data.username,
+          password: hashPasswordFtomBcrypt,
+        });
+      }
+      resolve({
+        errCode: 0,
+        errMessage: "Ok",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let deleteUser = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    let user = await db.User.findOne({
+      where: { id: userId },
+    })
+    if(!user) {
+      resolve({
+        errCode: 2,
+        errMessage: "User not found"
+      })
+    }
+    
+    await db.User.destroy({
+      where: { id: userId }
+    });
+    
+    resolve({
+      errCode: 0,
+      message: "User is deleted"
+    })
+  })
+}
+
+let editUser = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if(!data.id) {
+        resolve({
+          errCode: 2,
+          errMessage: "Missing user id"
+        })
+      }
+      let user = await db.User.findOne({
+        where: { id: data.id },
+        raw: false
+      })
+      if(user) {
+        user.email = data.email;
+        user.firstName = data.firstName;
+        user.lastName = data.lastName;
+        user.address = data.address;
+
+        await user.save();
+
+        resolve({
+          errCode: 0,
+          message: 'Updated user!'
+        })
+      }else {
+        resolve({
+          errCode: 1,
+          errMessage: "User not found"
+        })
+      }
+    } catch (e) {
+      reject(e);
+    }
+  })
+}
+
 module.exports = {
   handleLogin: handleLogin,
   handleSignup: handleSignup,
@@ -176,4 +292,9 @@ module.exports = {
   getUserInfoById: getUserInfoById,
   updateUserData: updateUserData,
   deleteUserById: deleteUserById,
+
+  getAllUsers: getAllUsers,
+  createNewUser: createNewUser,
+  deleteUser: deleteUser,
+  editUser: editUser,
 };
