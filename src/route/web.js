@@ -24,6 +24,9 @@ let initWebRoutes = (app) => {
   //API Documents
   router.get("/api/get-list-documents", documentController.getListDocuments);
   router.get("/api/get-document-by-id", documentController.getDocumentById);
+  router.post("/api/create-new-document", documentController.createNewDocument);
+  router.put("/api/edit-document", documentController.editDocument);
+  router.delete("/api/delete-document", documentController.deleteDocument);
 
   return app.use("/", router);
 };

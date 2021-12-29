@@ -70,7 +70,109 @@ let getDocumentById = (docId) => {
   });
 };
 
+let createNewDocument = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (
+        !data.nameDocument ||
+        !data.content ||
+        !data.pageNumber ||
+        !data.publisherId ||
+        !data.authorId ||
+        !data.categoryId
+      ) {
+        resolve({
+          errCode: 1,
+          errMessage: "Invalid data",
+        });
+      } else {
+        await db.Document.create({
+          nameDocument: data.nameDocument,
+          content: data.content,
+          pageNumber: data.pageNumber,
+          publisherId: data.publisherId,
+          authorId: data.authorId,
+          categoryId: data.categoryId,
+        });
+      }
+      resolve({
+        errCode: 0,
+        errMessage: "Ok",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let editDocument = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (
+        !data.id ||
+        !data.nameDocument ||
+        !data.content ||
+        !data.pageNumber ||
+        !data.publisherId ||
+        !data.authorId ||
+        !data.categoryId
+      ) {
+        resolve({
+          errCode: 1,
+          errMessage: "Invalid data",
+        });
+      } else {
+        await db.Document.update(
+          {
+            nameDocument: data.nameDocument,
+            content: data.content,
+            pageNumber: data.pageNumber,
+            publisherId: data.publisherId,
+            authorId: data.authorId,
+            categoryId: data.categoryId,
+          },
+          {
+            where: { id: data.id },
+          }
+        );
+      }
+      resolve({
+        errCode: 0,
+        errMessage: "Ok",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let deleteDocument = (docId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!docId) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing id doc",
+        });
+      } else {
+        await db.Document.destroy({
+          where: { id: docId },
+        });
+      }
+      resolve({
+        errCode: 0,
+        errMessage: "Ok",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   getDocumentById: getDocumentById,
   getListDocuments: getListDocuments,
+  createNewDocument: createNewDocument,
+  editDocument: editDocument,
+  deleteDocument: deleteDocument,
 };
