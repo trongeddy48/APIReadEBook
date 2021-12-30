@@ -24,24 +24,25 @@ let getListDocuments = () => {
             required: true,
             as: "publisherData",
             attributes: ["namePublisher"],
-            where: db.Document.publisherId == db.Publisher.id,
+            // where: db.Document.publisherId == db.Publisher.id,
           },
           {
             model: db.Author,
             required: true,
             as: "authorData",
             attributes: ["nameAuthor"],
-            where: db.Document.authorId == db.Author.id,
+            // where: db.Document.authorId == db.Author.id,
           },
           {
             model: db.Category,
             required: true,
             as: "categoryData",
             attributes: ["nameCategory"],
-            where: db.Document.categoryId == db.Category.id,
+            // where: db.Document.categoryId == db.Category.id,
           },
         ],
         raw: true,
+        nest: true,
       });
       resolve(docs);
     } catch (e) {
@@ -169,10 +170,105 @@ let deleteDocument = (docId) => {
   });
 };
 
+let getDetailDocument = (docId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let doc = await db.Document.findOne({
+        attributes: [
+          "id",
+          "nameDocument",
+          "smallDescription",
+          "pageNumber",
+          "publisherId",
+          "authorId",
+          "categoryId",
+        ],
+        include: [
+          {
+            model: db.Publisher,
+            required: true,
+            as: "publisherData",
+            attributes: ["namePublisher"],
+            // where: db.Document.publisherId == db.Publisher.id,
+          },
+          {
+            model: db.Author,
+            required: true,
+            as: "authorData",
+            attributes: ["nameAuthor"],
+            // where: db.Document.authorId == db.Author.id,
+          },
+          {
+            model: db.Category,
+            required: true,
+            as: "categoryData",
+            attributes: ["nameCategory"],
+            // where: db.Document.categoryId == db.Category.id,
+          },
+        ],
+        where: { id: docId },
+        raw: true,
+        nest: true,
+      });
+
+      if (doc) {
+        resolve(doc);
+      } else {
+        resolve({});
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let getDocumentByAuthor = (authorId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let docs = await db.Author.findAll({
+        where: { id: authorId },
+        attributes: ["id", "nameAuthor", "birthday"],
+        include: [
+          {
+            model: db.Document,
+            required: true,
+            as: "authorData",
+            attributes: ["id", "nameDocument"],
+            where: db.Document.authorId == db.Author.id,
+            include: [
+              {
+                model: db.Publisher,
+                required: true,
+                as: "publisherData",
+                attributes: ["namePublisher"],
+                where: db.Document.publisherId == db.Publisher.id,
+              },
+              {
+                model: db.Category,
+                required: true,
+                as: "categoryData",
+                attributes: ["nameCategory"],
+                where: db.Document.categoryId == db.Category.id,
+              },
+            ],
+          },
+        ],
+        raw: true,
+        nest: true,
+      });
+      resolve(docs);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 module.exports = {
   getDocumentById: getDocumentById,
   getListDocuments: getListDocuments,
   createNewDocument: createNewDocument,
   editDocument: editDocument,
   deleteDocument: deleteDocument,
+  getDetailDocument: getDetailDocument,
+  getDocumentByAuthor: getDocumentByAuthor,
 };
