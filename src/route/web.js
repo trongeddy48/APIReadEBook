@@ -12,6 +12,9 @@ let initWebRoutes = (app) => {
   //API Users
   router.post("/api/signup", userController.handleSignup);
   router.post("/api/login", userController.handleLogin);
+  router.post("/api/logout", userController.handleLogout);
+  router.post("/api/change-password", userController.handleChangePassword);
+  
   router.get("/api/get-user", userController.getAllUser);
   router.get("/api/edit-user", userController.getEditUser);
   router.post("/api/update-user", userController.updateUser);
@@ -31,6 +34,8 @@ let initWebRoutes = (app) => {
   router.delete("/api/delete-document", documentController.deleteDocument);
 
   router.get("/api/get-doc-by-author", documentController.getDocumentByAuthor);
+  router.get("/api/get-doc-by-category", documentController.getDocumentByCategory);
+  router.get("/api/get-doc-by-publisher", documentController.getDocumentByPublisher);
 
   //API Admin
   router.get("/api/get-list-publisher", adminController.getListPublisher);
@@ -39,7 +44,12 @@ let initWebRoutes = (app) => {
   router.post("/api/create-new-publisher", adminController.createNewPublisher);
   router.post("/api/create-new-category", adminController.createNewCategory);
   router.post("/api/create-new-author", adminController.createNewAuthor);
-
+  router.put("/api/edit-publisher", adminController.editPublisher);
+  router.put("/api/edit-category", adminController.editCategory);
+  router.put("/api/edit-author", adminController.editAuthor);
+  router.delete("/api/delete-publisher", adminController.deletePublisher);
+  router.delete("/api/delete-category", adminController.deleteCategory);
+  router.delete("/api/delete-author", adminController.deleteAuthor);
 
   return app.use("/", router);
 };

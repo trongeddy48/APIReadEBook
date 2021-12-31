@@ -263,6 +263,88 @@ let getDocumentByAuthor = (authorId) => {
   });
 };
 
+let getDocumentByCategory = (categoryId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let docs = await db.Category.findAll({
+        where: { id: categoryId },
+        attributes: ["id", "nameCategory", "description"],
+        include: [
+          {
+            model: db.Document,
+            required: true,
+            as: "categoryData",
+            attributes: ["id", "nameDocument"],
+            where: db.Document.categoryId == db.Category.id,
+            include: [
+              {
+                model: db.Publisher,
+                required: true,
+                as: "publisherData",
+                attributes: ["namePublisher"],
+                where: db.Document.publisherId == db.Publisher.id,
+              },
+              {
+                model: db.Author,
+                required: true,
+                as: "authorData",
+                attributes: ["nameAuthor"],
+                where: db.Document.authorId == db.Author.id,
+              },
+            ],
+          },
+        ],
+        raw: true,
+        nest: true,
+      });
+      resolve(docs);
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+let getDocumentByPublisher = (publisherId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let docs = await db.Publisher.findAll({
+        where: { id: publisherId },
+        attributes: ["id", "namePublisher", "address"],
+        include: [
+          {
+            model: db.Document,
+            required: true,
+            as: "publisherData",
+            attributes: ["id", "nameDocument"],
+            where: db.Document.publisherId == db.Publisher.id,
+            include: [
+              {
+                model: db.Author,
+                required: true,
+                as: "authorData",
+                attributes: ["nameAuthor"],
+                where: db.Document.authorId == db.Author.id,
+              },
+              {
+                model: db.Category,
+                required: true,
+                as: "categoryData",
+                attributes: ["nameCategory"],
+                where: db.Document.categoryId == db.Category.id,
+              },
+            ],
+          },
+        ],
+        raw: true,
+        nest: true,
+      });
+      resolve(docs);
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 module.exports = {
   getDocumentById: getDocumentById,
   getListDocuments: getListDocuments,
@@ -271,4 +353,6 @@ module.exports = {
   deleteDocument: deleteDocument,
   getDetailDocument: getDetailDocument,
   getDocumentByAuthor: getDocumentByAuthor,
+  getDocumentByCategory: getDocumentByCategory,
+  getDocumentByPublisher: getDocumentByPublisher,
 };

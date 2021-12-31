@@ -126,6 +126,183 @@ let createNewAuthor = (data) => {
     })
 }
 
+let editPublisher = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(
+                !data.id ||
+                !data.namePublisher ||
+                !data.address
+            ) {
+                resolve({
+                  errCode: 1,
+                  errMessage: "Invalid data",
+                });
+            } else {
+                await db.Publisher.update({
+                    namePublisher: data.namePublisher,
+                    address: data.address
+                }, {
+                    where: {
+                        id: data.id
+                    }
+                });
+            }
+            resolve({
+                errCode: 0,
+                errMessage: "Ok",
+              });
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let editCategory = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(
+                !data.id ||
+                !data.nameCategory ||
+                !data.description
+            ) {
+                resolve({
+                  errCode: 1,
+                  errMessage: "Invalid data",
+                });
+            } else {
+                await db.Category.update({
+                    nameCategory: data.nameCategory,
+                    description: data.description
+                }, {
+                    where: {
+                        id: data.id
+                    }
+                });
+            }
+            resolve({
+                errCode: 0,
+                errMessage: "Ok",
+              });
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let editAuthor = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(
+                !data.id ||
+                !data.nameAuthor ||
+                !data.birthday
+            ) {
+                resolve({
+                  errCode: 1,
+                  errMessage: "Invalid data",
+                });
+            } else {
+                await db.Author.update({
+                    nameAuthor: data.nameAuthor,
+                    birthday: data.birthday
+                }, {
+                    where: {
+                        id: data.id
+                    }
+                });
+            }
+            resolve({
+                errCode: 0,
+                errMessage: "Ok",
+              });
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let deletePublisher = (pubId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(
+                !pubId
+            ) {
+                resolve({
+                  errCode: 1,
+                  errMessage: "Invalid data",
+                });
+            } else {
+                await db.Publisher.destroy({
+                    where: {
+                        id: pubId
+                    }
+                });
+            }
+            resolve({
+                errCode: 0,
+                errMessage: "Ok",
+              });
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let deleteCategory = (cateId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(
+                !cateId
+            ) {
+                resolve({
+                  errCode: 1,
+                  errMessage: "Invalid data",
+                });
+            } else {
+                await db.Category.destroy({
+                    where: {
+                        id: cateId
+                    }
+                });
+            }
+            resolve({
+                errCode: 0,
+                errMessage: "Ok",
+              });
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let deleteAuthor = (authorId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(
+                !authorId
+            ) {
+                resolve({
+                  errCode: 1,
+                  errMessage: "Invalid data",
+                });
+            } else {
+                await db.Author.destroy({
+                    where: {
+                        id: authorId
+                    }
+                });
+            }
+            resolve({
+                errCode: 0,
+                errMessage: "Ok",
+              });
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     getListPublisher: getListPublisher,
     getListCategory: getListCategory,
@@ -133,4 +310,10 @@ module.exports = {
     createNewPublisher: createNewPublisher,
     createNewCategory: createNewCategory,
     createNewAuthor: createNewAuthor,
+    editPublisher: editPublisher,
+    editCategory: editCategory,
+    editAuthor: editAuthor,
+    deletePublisher: deletePublisher,
+    deleteCategory: deleteCategory,
+    deleteAuthor: deleteAuthor,
 }

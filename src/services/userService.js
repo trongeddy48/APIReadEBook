@@ -285,9 +285,45 @@ let editUser = (data) => {
   })
 }
 
+let handleChangePassword = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: data.id },
+      });
+      if (user) {
+        let check = await bcrypt.compareSync(data.oldPassword, user.password);
+        if (check) {
+          let hashPasswordFtomBcrypt = await hashUserPassword(data.newPassword);
+          user.password = hashPasswordFtomBcrypt;
+          await user.save();
+          resolve({
+            errCode: 0,
+            errMessage: "Ok",
+          });
+        } else {
+          resolve({
+            errCode: 1,
+            errMessage: "Wrong password",
+          });
+        }
+      } else {
+        resolve({
+          errCode: 2,
+          errMessage: "User not found",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 module.exports = {
   handleLogin: handleLogin,
   handleSignup: handleSignup,
+  handleChangePassword: handleChangePassword,
+
   getAllUser: getAllUser,
   getUserInfoById: getUserInfoById,
   updateUserData: updateUserData,

@@ -96,6 +96,36 @@ let getDocumentByAuthor = async (req, res) => {
   }
 }
 
+let getDocumentByCategory = async (req, res) => {
+  try {
+    let info = await documentService.getDocumentByCategory(req.query.id);
+    return res.status(200).json({
+      info,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from server...",
+    });
+  }
+}
+
+let getDocumentByPublisher = async (req, res) => {
+  try {
+    let info = await documentService.getDocumentByPublisher(req.query.id);
+    return res.status(200).json({
+      info,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from server...",
+    });
+  }
+}
+
 module.exports = {
   getDocumentById: getDocumentById,
   getListDocuments: getListDocuments,
@@ -104,4 +134,6 @@ module.exports = {
   deleteDocument: deleteDocument,
   getDetailDocument: getDetailDocument,
   getDocumentByAuthor: getDocumentByAuthor,
+  getDocumentByCategory: getDocumentByCategory,
+  getDocumentByPublisher: getDocumentByPublisher,
 };

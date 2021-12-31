@@ -90,6 +90,96 @@ let createNewAuthor = async (req, res) => {
     }
 }
 
+let editPublisher = async (req, res) => {
+    try {
+        let info = await adminService.editPublisher(req.body);
+        return res.status(200).json({
+        info,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+        errCode: -1,
+        errMessage: "Error from server...",
+        });
+    }
+}
+
+let editCategory = async (req, res) => {
+    try {
+        let info = await adminService.editCategory(req.body);
+        return res.status(200).json({
+        info,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+        errCode: -1,
+        errMessage: "Error from server...",
+        });
+    }
+}
+
+let editAuthor = async (req, res) => {
+    try {
+        let info = await adminService.editAuthor(req.body);
+        return res.status(200).json({
+        info,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+        errCode: -1,
+        errMessage: "Error from server...",
+        });
+    }
+}
+
+let deletePublisher = async (req, res) => {
+    try {
+        let info = await adminService.deletePublisher(req.query.id);
+        return res.status(200).json({
+        info,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+        errCode: -1,
+        errMessage: "Error from server...",
+        });
+    }
+}
+
+let deleteCategory = async (req, res) => {
+    try {
+        let info = await adminService.deleteCategory(req.query.id);
+        return res.status(200).json({
+        info,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+        errCode: -1,
+        errMessage: "Error from server...",
+        });
+    }
+}
+
+let deleteAuthor = async (req, res) => {
+    try {
+        let info = await adminService.deleteAuthor(req.query.id);
+        return res.status(200).json({
+        info,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+        errCode: -1,
+        errMessage: "Error from server...",
+        });
+    }
+}
+
 module.exports = {
     getListPublisher: getListPublisher,
     getListCategory: getListCategory,
@@ -97,4 +187,10 @@ module.exports = {
     createNewPublisher: createNewPublisher,
     createNewCategory: createNewCategory,
     createNewAuthor: createNewAuthor,
+    editPublisher: editPublisher,
+    editCategory: editCategory,
+    editAuthor: editAuthor,
+    deletePublisher: deletePublisher,
+    deleteCategory: deleteCategory,
+    deleteAuthor: deleteAuthor,
 }

@@ -111,9 +111,22 @@ let handleDeleteUser = async (req, res) => {
   return res.status(200).json(message);
 }
 
+let handleLogout = async (req, res) => {
+  
+}
+
+let handleChangePassword  = async (req, res) => {
+  let data = req.body;
+  let message = await userService.changePassword(data);
+  return res.status(200).json(message);
+}
+
 module.exports = {
   handleLogin: handleLogin,
   handleSignup: handleSignup,
+  handleLogout: handleLogout,
+  handleChangePassword: handleChangePassword,
+
   getAllUser: getAllUser,
   getEditUser: getEditUser,
   updateUser: updateUser,
