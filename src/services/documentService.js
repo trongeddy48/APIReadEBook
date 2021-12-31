@@ -13,6 +13,7 @@ let getListDocuments = () => {
           "id",
           "nameDocument",
           "pageNumber",
+          "imageDocument",
           "publisherId",
           "authorId",
           "categoryId",
@@ -179,6 +180,7 @@ let getDetailDocument = (docId) => {
           "nameDocument",
           "smallDescription",
           "pageNumber",
+          "imageDocument",
           "publisherId",
           "authorId",
           "categoryId",
@@ -268,13 +270,13 @@ let getDocumentByCategory = (categoryId) => {
     try {
       let docs = await db.Category.findAll({
         where: { id: categoryId },
-        attributes: ["id", "nameCategory", "description"],
+        attributes: ["id", "nameCategory", "description", "imageCategory"],
         include: [
           {
             model: db.Document,
             required: true,
             as: "categoryData",
-            attributes: ["id", "nameDocument"],
+            attributes: ["id", "nameDocument", "imageDocument"],
             where: db.Document.categoryId == db.Category.id,
             include: [
               {

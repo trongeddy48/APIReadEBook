@@ -4,7 +4,7 @@ let getListPublisher = () => {
     return new Promise(async (resolve, reject) => {
         try {
         let pubs = await db.Publisher.findAll({
-            attributes: ["id", "namePublisher"],
+            attributes: ["id", "namePublisher", "description", "imagePublisher"],
             raw: true,
             nest: true,
         });
@@ -19,7 +19,7 @@ let getListCategory = () => {
     return new Promise(async (resolve, reject) => {
         try {
         let cats = await db.Category.findAll({
-            attributes: ["id", "nameCategory"],
+            attributes: ["id", "nameCategory", "description", "imageCategory"],
             raw: true,
             nest: true,
         });
@@ -34,7 +34,7 @@ let getListAuthor = () => {
     return new Promise(async (resolve, reject) => {
         try {
         let authors = await db.Author.findAll({
-            attributes: ["id", "nameAuthor"],
+            attributes: ["id", "nameAuthor", "description", "imageAuthor"],
             raw: true,
             nest: true,
         });
