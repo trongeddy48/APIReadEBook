@@ -270,7 +270,7 @@ let getDocumentByCategory = (categoryId) => {
     try {
       let docs = await db.Category.findAll({
         where: { id: categoryId },
-        attributes: ["id", "nameCategory", "description", "imageCategory"],
+        attributes: ["id", "nameCategory"],
         include: [
           {
             model: db.Document,
@@ -347,6 +347,54 @@ let getDocumentByPublisher = (publisherId) => {
   });
 }
 
+let getInfoCategory = (categoryId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let category = await db.Category.findOne({
+        where: { id: categoryId },
+        attributes: ["id", "nameCategory", "description", "imageCategory"],
+        raw: true,
+        nest: true,
+      });
+      resolve(category);
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+let getInfoAuthor = (authorId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let author = await db.Author.findOne({
+        where: { id: authorId },
+        attributes: ["id", "nameAuthor", "birthday", "imageAuthor"],
+        raw: true,
+        nest: true,
+      });
+      resolve(author);
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+let getInfoPublisher = (publisherId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let publisher = await db.Publisher.findOne({
+        where: { id: publisherId },
+        attributes: ["id", "namePublisher", "address", "imagePublisher"],
+        raw: true,
+        nest: true,
+      });
+      resolve(publisher);
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 module.exports = {
   getDocumentById: getDocumentById,
   getListDocuments: getListDocuments,
@@ -357,4 +405,8 @@ module.exports = {
   getDocumentByAuthor: getDocumentByAuthor,
   getDocumentByCategory: getDocumentByCategory,
   getDocumentByPublisher: getDocumentByPublisher,
+
+  getInfoCategory: getInfoCategory,
+  getInfoAuthor: getInfoAuthor,
+  getInfoPublisher: getInfoPublisher,
 };

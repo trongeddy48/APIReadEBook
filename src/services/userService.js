@@ -319,6 +319,10 @@ let handleChangePassword = (data) => {
   });
 }
 
+let saveDocument = (data) => {
+  
+}
+
 module.exports = {
   handleLogin: handleLogin,
   handleSignup: handleSignup,
@@ -333,4 +337,6 @@ module.exports = {
   createNewUser: createNewUser,
   deleteUser: deleteUser,
   editUser: editUser,
+
+  saveDocument: saveDocument,
 };

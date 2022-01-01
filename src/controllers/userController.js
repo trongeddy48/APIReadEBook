@@ -121,6 +121,10 @@ let handleChangePassword  = async (req, res) => {
   return res.status(200).json(message);
 }
 
+let handleSaveDocument = async (req, res) => {
+  
+}
+
 module.exports = {
   handleLogin: handleLogin,
   handleSignup: handleSignup,
@@ -136,4 +140,6 @@ module.exports = {
   handleCreateNewUser: handleCreateNewUser,
   handleEditUser: handleEditUser,
   handleDeleteUser: handleDeleteUser,
+
+  handleSaveDocument: handleSaveDocument,
 };

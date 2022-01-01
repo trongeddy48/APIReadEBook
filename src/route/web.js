@@ -25,6 +25,8 @@ let initWebRoutes = (app) => {
   router.put("/api/edit-a-user", userController.handleEditUser);
   router.delete("/api/delete-a-user", userController.handleDeleteUser);
 
+  router.get("/api/save-document", userController.handleSaveDocument);
+
   //API Documents
   router.get("/api/get-list-documents", documentController.getListDocuments);
   router.get("/api/get-detail-document", documentController.getDetailDocument);
@@ -32,6 +34,10 @@ let initWebRoutes = (app) => {
   router.post("/api/create-new-document", documentController.createNewDocument);
   router.put("/api/edit-document", documentController.editDocument);
   router.delete("/api/delete-document", documentController.deleteDocument);
+
+  router.get("/api/get-info-category", documentController.getInfoCategory);
+  router.get("/api/get-info-author", documentController.getInfoAuthor);
+  router.get("/api/get-info-pubslisher", documentController.getInfoPublisher);
 
   router.get("/api/get-doc-by-author", documentController.getDocumentByAuthor);
   router.get("/api/get-doc-by-category", documentController.getDocumentByCategory);
