@@ -1,12 +1,18 @@
 import userService from "../services/userService";
 
 let handleSignup = async (req, res) => {
-  let message = await userService.handleSignup(req.body);
-  console.log(message);
-  return res.status(200).json({
-    errCode: 0,
-    errMessage: "Ok",
-  });
+  try {
+    let message = await userService.handleSignup(req.body);
+    return res.status(200).json({
+      message,
+    });
+  } catch (e) {
+    console.log(message);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from server...",
+    });
+  }
 };
 
 let handleLogin = async (req, res) => {
@@ -92,38 +98,34 @@ let handleCreateNewUser = async (req, res) => {
   let message = await userService.createNewUser(req.body);
   console.log(message);
   return res.status(200).json(message);
-}
+};
 
 let handleEditUser = async (req, res) => {
   let data = req.body;
   let message = await userService.editUser(data);
   return res.status(200).json(message);
-}
+};
 
 let handleDeleteUser = async (req, res) => {
-  if(!req.body.id) {
+  if (!req.body.id) {
     return res.status(200).json({
       errCode: 1,
-      errMessage: "Missing Id"
-    })
+      errMessage: "Missing Id",
+    });
   }
   let message = await userService.deleteUser(req.body.id);
   return res.status(200).json(message);
-}
+};
 
-let handleLogout = async (req, res) => {
-  
-}
+let handleLogout = async (req, res) => {};
 
-let handleChangePassword  = async (req, res) => {
+let handleChangePassword = async (req, res) => {
   let data = req.body;
   let message = await userService.changePassword(data);
   return res.status(200).json(message);
-}
+};
 
-let handleSaveDocument = async (req, res) => {
-  
-}
+let handleSaveDocument = async (req, res) => {};
 
 module.exports = {
   handleLogin: handleLogin,
