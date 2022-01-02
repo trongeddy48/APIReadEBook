@@ -57,6 +57,7 @@ let handleLogin = (username, password) => {
       if (isExist) {
         let user = await db.User.findOne({
           attributes: [
+            "id",
             "username",
             "password",
             "email",
@@ -184,6 +185,20 @@ let deleteUserById = (userId) => {
   });
 };
 
+let getInfoUser = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: userId },
+        attributes: ["id", "email", "firstName", "lastName", "address", "imageUser", "username", "password"],
+      });
+      resolve(user);
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 let getAllUsers = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -277,11 +292,17 @@ let editUser = (data) => {
         raw: false,
       });
       if (user) {
+        if(data.password == null && data.password == ''){
+          let hashPasswordFtomBcrypt = await hashUserPassword(data.password);
+          user.password = hashPasswordFtomBcrypt;
+        }
+
         user.email = data.email;
         user.firstName = data.firstName;
         user.lastName = data.lastName;
         user.address = data.address;
-
+        user.imageUser = data.imageUser;
+        
         await user.save();
 
         resolve({
@@ -345,6 +366,8 @@ module.exports = {
   getUserInfoById: getUserInfoById,
   updateUserData: updateUserData,
   deleteUserById: deleteUserById,
+
+  getInfoUser: getInfoUser,
 
   getAllUsers: getAllUsers,
   createNewUser: createNewUser,

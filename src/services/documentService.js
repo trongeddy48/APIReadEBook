@@ -56,7 +56,7 @@ let getDocumentById = (docId) => {
   return new Promise(async (resolve, reject) => {
     try {
       let doc = await db.Document.findOne({
-        attributes: ["content"],
+        attributes: ["imageDocument","content"],
         where: { id: docId },
         raw: true,
       });
@@ -235,7 +235,7 @@ let getDocumentByAuthor = (authorId) => {
             model: db.Document,
             required: true,
             as: "authorData",
-            attributes: ["id", "nameDocument"],
+            attributes: ["id", "nameDocument", "imageDocument"],
             where: db.Document.authorId == db.Author.id,
             include: [
               {
@@ -304,7 +304,7 @@ let getDocumentByCategory = (categoryId) => {
       reject(e);
     }
   });
-}
+};
 
 let getDocumentByPublisher = (publisherId) => {
   return new Promise(async (resolve, reject) => {
@@ -317,7 +317,7 @@ let getDocumentByPublisher = (publisherId) => {
             model: db.Document,
             required: true,
             as: "publisherData",
-            attributes: ["id", "nameDocument"],
+            attributes: ["id", "nameDocument", "imageDocument"],
             where: db.Document.publisherId == db.Publisher.id,
             include: [
               {
@@ -345,7 +345,7 @@ let getDocumentByPublisher = (publisherId) => {
       reject(e);
     }
   });
-}
+};
 
 let getInfoCategory = (categoryId) => {
   return new Promise(async (resolve, reject) => {
@@ -361,14 +361,20 @@ let getInfoCategory = (categoryId) => {
       reject(e);
     }
   });
-}
+};
 
 let getInfoAuthor = (authorId) => {
   return new Promise(async (resolve, reject) => {
     try {
       let author = await db.Author.findOne({
         where: { id: authorId },
-        attributes: ["id", "nameAuthor", "birthday", "imageAuthor"],
+        attributes: [
+          "id",
+          "nameAuthor",
+          "birthday",
+          "description",
+          "imageAuthor",
+        ],
         raw: true,
         nest: true,
       });
@@ -377,7 +383,7 @@ let getInfoAuthor = (authorId) => {
       reject(e);
     }
   });
-}
+};
 
 let getInfoPublisher = (publisherId) => {
   return new Promise(async (resolve, reject) => {
@@ -393,7 +399,7 @@ let getInfoPublisher = (publisherId) => {
       reject(e);
     }
   });
-}
+};
 
 module.exports = {
   getDocumentById: getDocumentById,
