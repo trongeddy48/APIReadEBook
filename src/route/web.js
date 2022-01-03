@@ -27,7 +27,8 @@ let initWebRoutes = (app) => {
 
   router.get("/api/get-info-user", userController.handleGetInfoUser);
 
-  router.get("/api/save-document", userController.handleSaveDocument);
+  router.post("/api/save-document", userController.handleSaveDocument);
+  router.get("/api/check-saved-document", userController.checkSavedDocument);
 
   //API Documents
   router.get("/api/get-list-documents", documentController.getListDocuments);

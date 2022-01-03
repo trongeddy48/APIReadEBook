@@ -90,7 +90,7 @@ let handleGetInfoUser = async (req, res) => {
     message: "Ok",
     user,
   });
-}
+};
 
 let handleGetAllUsers = async (req, res) => {
   let id = req.query.id;
@@ -143,7 +143,42 @@ let handleChangePassword = async (req, res) => {
   return res.status(200).json(message);
 };
 
-let handleSaveDocument = async (req, res) => {};
+let handleSaveDocument = async (req, res) => {
+  let documentId = req.body.documentId;
+  let userId = req.body.userId;
+
+  if (!documentId || !userId) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: "Invalid documentId or userId",
+    });
+  }
+    let saveDoc = await userService.handleSaveDocument(documentId, userId);
+
+  return res.status(200).json({
+    errCode: 1,
+    message: saveDoc.message,
+  });
+};
+
+let checkSavedDocument = async (req, res) => {
+  let documentId = req.query.documentId;
+  let userId = req.query.userId;
+
+  if (!documentId || !userId) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: "Invalid documentId or userId",
+    });
+  }
+
+  let isSaved = await userService.checkSavedDocument(documentId, userId);
+
+  return res.status(200).json({
+    errCode: 1,
+    message: isSaved.message,
+  });
+}
 
 module.exports = {
   handleLogin: handleLogin,
@@ -164,4 +199,5 @@ module.exports = {
   handleDeleteUser: handleDeleteUser,
 
   handleSaveDocument: handleSaveDocument,
+  checkSavedDocument: checkSavedDocument,
 };

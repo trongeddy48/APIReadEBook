@@ -355,7 +355,58 @@ let handleChangePassword = (data) => {
   });
 };
 
-let saveDocument = (data) => {};
+let handleSaveDocument = (documentId, userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.Savedoc.findOne({
+        where: { userId: userId, documentId: documentId },
+      });
+      if (user) {
+        await db.Savedoc.destroy({
+          where: { userId: userId, documentId: documentId }
+        });
+        resolve({
+          errCode: 0,
+          message: "Delete saved document",
+        });
+      } else {
+        await db.Savedoc.create({
+          documentId: documentId,
+          userId: userId,
+        });
+        resolve({
+          errCode: 1,
+          message: "Saved document",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let checkSavedDocument = (documentId, userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let savedDoc = await db.Savedoc.findOne({
+        where: { userId: userId, documentId: documentId },
+      });
+      if (savedDoc) {
+        resolve({
+          errCode: 1,
+          message: "Saved",
+        });
+      } else {
+        resolve({
+          errCode: 1,
+          message: "Not saved",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
 
 module.exports = {
   handleLogin: handleLogin,
@@ -374,5 +425,6 @@ module.exports = {
   deleteUser: deleteUser,
   editUser: editUser,
 
-  saveDocument: saveDocument,
+  handleSaveDocument: handleSaveDocument,
+  checkSavedDocument: checkSavedDocument,
 };

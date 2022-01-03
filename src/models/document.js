@@ -24,13 +24,21 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "id",
         as: "categoryData",
       });
+      
+      Document.hasMany(models.Savedoc, {
+        foreignKey: "documentId",
+        targetKey: "id",
+        as: "savedocData",
+      });
     }
   }
   Document.init(
     {
       nameDocument: DataTypes.STRING,
       content: DataTypes.TEXT,
+      smallDescription: DataTypes.TEXT,
       pageNumber: DataTypes.INTEGER,
+      imageDocument: DataTypes.TEXT,
       publisherId: DataTypes.INTEGER,
       authorId: DataTypes.INTEGER,
       categoryId: DataTypes.INTEGER,

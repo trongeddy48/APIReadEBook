@@ -56,7 +56,7 @@ let getDocumentById = (docId) => {
   return new Promise(async (resolve, reject) => {
     try {
       let doc = await db.Document.findOne({
-        attributes: ["imageDocument","content"],
+        attributes: ["imageDocument", "content"],
         where: { id: docId },
         raw: true,
       });
@@ -78,7 +78,9 @@ let createNewDocument = (data) => {
       if (
         !data.nameDocument ||
         !data.content ||
-        !data.pageNumber ||
+        !data.smallDescription ||
+        // !data.pageNumber ||
+        !data.imageDocument ||
         !data.publisherId ||
         !data.authorId ||
         !data.categoryId
@@ -91,7 +93,9 @@ let createNewDocument = (data) => {
         await db.Document.create({
           nameDocument: data.nameDocument,
           content: data.content,
+          smallDescription: data.smallDescription,
           pageNumber: data.pageNumber,
+          imageDocument: data.imageDocument,
           publisherId: data.publisherId,
           authorId: data.authorId,
           categoryId: data.categoryId,
@@ -114,7 +118,9 @@ let editDocument = (data) => {
         !data.id ||
         !data.nameDocument ||
         !data.content ||
-        !data.pageNumber ||
+        !data.smallDescription ||
+        // !data.pageNumber ||
+        !data.imageDocument ||
         !data.publisherId ||
         !data.authorId ||
         !data.categoryId
@@ -128,7 +134,9 @@ let editDocument = (data) => {
           {
             nameDocument: data.nameDocument,
             content: data.content,
+            smallDescription: data.smallDescription,
             pageNumber: data.pageNumber,
+            imageDocument: data.imageDocument,
             publisherId: data.publisherId,
             authorId: data.authorId,
             categoryId: data.categoryId,
@@ -157,6 +165,12 @@ let deleteDocument = (docId) => {
           errMessage: "Missing id doc",
         });
       } else {
+        if (db.Savedoc.findOne({ where: { documentId: docId } })) {
+          await db.Savedoc.destroy({
+            where: { documentId: docId },
+          });
+        }
+
         await db.Document.destroy({
           where: { id: docId },
         });
