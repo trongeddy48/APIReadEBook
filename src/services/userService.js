@@ -116,6 +116,9 @@ let getAllUser = () => {
   return new Promise(async (resolve, reject) => {
     try {
       let users = await db.User.findAll({
+        attributes: {
+          exclude: ["password"],
+        },
         raw: true,
       });
       resolve(users);
@@ -257,24 +260,26 @@ let createNewUser = (data) => {
 
 let deleteUser = (userId) => {
   return new Promise(async (resolve, reject) => {
-    let user = await db.User.findOne({
-      where: { id: userId },
-    });
-    if (!user) {
-      resolve({
-        errCode: 2,
-        errMessage: "User not found",
+    try {
+      let user = await db.Savedoc.findOne({
+        where: { userId: userId },
       });
+      if (user) {
+        await db.Savedoc.destroy({
+          where: { userId: userId },
+        })
+      }
+      await db.User.destroy({
+        where: { id: userId },
+      });
+      resolve({
+        errCode: 0,
+        message: "Deleted user",
+      })
+      
+    } catch (e) {
+      reject(e);
     }
-
-    await db.User.destroy({
-      where: { id: userId },
-    });
-
-    resolve({
-      errCode: 0,
-      message: "User is deleted",
-    });
   });
 };
 

@@ -36,11 +36,19 @@ let handleLogin = async (req, res) => {
 };
 
 let getAllUser = async (req, res) => {
-  let data = await userService.getAllUser();
+  try {
+    let data = await userService.getAllUser();
 
-  return res.send({
-    dataTable: data,
-  });
+    return res.status(200).json({
+      data,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      message: "Error from server...",
+    })
+  }
 };
 
 let getEditUser = async (req, res) => {
