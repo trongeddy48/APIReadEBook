@@ -68,7 +68,7 @@ let createNewCategory = async (req, res) => {
         });
     } catch (e) {
         console.log(e);
-        return res.status(200).json({
+        return res.status(500).json({
         errCode: -1,
         errMessage: "Error from server...",
         });
@@ -83,7 +83,7 @@ let createNewAuthor = async (req, res) => {
         });
     } catch (e) {
         console.log(e);
-        return res.status(200).json({
+        return res.status(500).json({
         errCode: -1,
         errMessage: "Error from server...",
         });

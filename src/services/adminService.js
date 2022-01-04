@@ -4,7 +4,7 @@ let getListPublisher = () => {
     return new Promise(async (resolve, reject) => {
         try {
         let pubs = await db.Publisher.findAll({
-            attributes: ["id", "namePublisher", "description", "imagePublisher"],
+            attributes: ["id", "namePublisher", "address", "description", "imagePublisher"],
             raw: true,
             nest: true,
         });
@@ -34,7 +34,7 @@ let getListAuthor = () => {
     return new Promise(async (resolve, reject) => {
         try {
         let authors = await db.Author.findAll({
-            attributes: ["id", "nameAuthor", "description", "imageAuthor"],
+            attributes: ["id", "nameAuthor","birthday", "description", "imageAuthor"],
             raw: true,
             nest: true,
         });
@@ -50,7 +50,9 @@ let createNewPublisher = (data) => {
         try {
             if(
                 !data.namePublisher ||
-                !data.address
+                !data.address ||
+                !data.description ||
+                !data.imagePublisher
             ) {
                 resolve({
                   errCode: 1,
@@ -59,7 +61,9 @@ let createNewPublisher = (data) => {
             } else {
                 await db.Publisher.create({
                     namePublisher: data.namePublisher,
-                    address: data.address
+                    address: data.address,
+                    description: data.description,
+                    imagePublisher: data.imagePublisher
                 });
             }
             resolve({
@@ -77,7 +81,8 @@ let createNewCategory = (data) => {
         try {
             if(
                 !data.nameCategory ||
-                !data.description
+                !data.description ||
+                !data.imageCategory
             ) {
                 resolve({
                   errCode: 1,
@@ -86,7 +91,8 @@ let createNewCategory = (data) => {
             } else {
                 await db.Category.create({
                     nameCategory: data.nameCategory,
-                    description: data.description
+                    description: data.description,
+                    imageCategory: data.imageCategory
                 });
             }
             resolve({
@@ -104,7 +110,9 @@ let createNewAuthor = (data) => {
         try {
             if(
                 !data.nameAuthor ||
-                !data.birthday
+                !data.birthday ||
+                !data.description ||
+                !data.imageAuthor
             ) {
                 resolve({
                   errCode: 1,
@@ -113,7 +121,9 @@ let createNewAuthor = (data) => {
             } else {
                 await db.Author.create({
                     nameAuthor: data.nameAuthor,
-                    birthday: data.birthday
+                    birthday: data.birthday,
+                    description: data.description,
+                    imageAuthor: data.imageAuthor
                 });
             }
             resolve({
@@ -132,7 +142,9 @@ let editPublisher = (data) => {
             if(
                 !data.id ||
                 !data.namePublisher ||
-                !data.address
+                !data.address ||
+                !data.description ||
+                !data.imagePublisher
             ) {
                 resolve({
                   errCode: 1,
@@ -141,7 +153,9 @@ let editPublisher = (data) => {
             } else {
                 await db.Publisher.update({
                     namePublisher: data.namePublisher,
-                    address: data.address
+                    address: data.address,
+                    description: data.description,
+                    imagePublisher: data.imagePublisher
                 }, {
                     where: {
                         id: data.id
@@ -164,7 +178,8 @@ let editCategory = (data) => {
             if(
                 !data.id ||
                 !data.nameCategory ||
-                !data.description
+                !data.description ||
+                !data.imageCategory
             ) {
                 resolve({
                   errCode: 1,
@@ -173,7 +188,8 @@ let editCategory = (data) => {
             } else {
                 await db.Category.update({
                     nameCategory: data.nameCategory,
-                    description: data.description
+                    description: data.description,
+                    imageCategory: data.imageCategory
                 }, {
                     where: {
                         id: data.id
@@ -196,7 +212,9 @@ let editAuthor = (data) => {
             if(
                 !data.id ||
                 !data.nameAuthor ||
-                !data.birthday
+                !data.birthday ||
+                !data.description ||
+                !data.imageAuthor
             ) {
                 resolve({
                   errCode: 1,
@@ -205,7 +223,9 @@ let editAuthor = (data) => {
             } else {
                 await db.Author.update({
                     nameAuthor: data.nameAuthor,
-                    birthday: data.birthday
+                    birthday: data.birthday,
+                    description: data.description,
+                    imageAuthor: data.imageAuthor
                 }, {
                     where: {
                         id: data.id

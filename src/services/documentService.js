@@ -404,7 +404,7 @@ let getInfoPublisher = (publisherId) => {
     try {
       let publisher = await db.Publisher.findOne({
         where: { id: publisherId },
-        attributes: ["id", "namePublisher", "address", "imagePublisher"],
+        attributes: ["id", "namePublisher", "address", "imagePublisher", "description"],
         raw: true,
         nest: true,
       });
