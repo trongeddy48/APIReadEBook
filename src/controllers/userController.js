@@ -188,6 +188,24 @@ let checkSavedDocument = async (req, res) => {
   });
 }
 
+let getAllSavedDocument = async (req, res) => {
+  let userId = req.query.id;
+
+  if (!userId) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: "Invalid userId",
+    });
+  }
+
+  let savedDocument = await userService.getAllSavedDocument(userId);
+
+  return res.status(200).json({
+    errCode: 1,
+    message: savedDocument.message,
+  });
+}
+
 module.exports = {
   handleLogin: handleLogin,
   handleSignup: handleSignup,
@@ -208,4 +226,5 @@ module.exports = {
 
   handleSaveDocument: handleSaveDocument,
   checkSavedDocument: checkSavedDocument,
+  getAllSavedDocument: getAllSavedDocument,
 };

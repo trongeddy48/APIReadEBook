@@ -180,6 +180,21 @@ let deleteAuthor = async (req, res) => {
     }
 }
 
+let handleLoginAdmin = async (req, res) => {
+    try {
+        let info = await adminService.handleLoginAdmin(req.body);
+        return res.status(200).json({
+        info,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+        errCode: -1,
+        errMessage: "Error from server...",
+        });
+    }
+}
+
 module.exports = {
     getListPublisher: getListPublisher,
     getListCategory: getListCategory,
@@ -193,4 +208,6 @@ module.exports = {
     deletePublisher: deletePublisher,
     deleteCategory: deleteCategory,
     deleteAuthor: deleteAuthor,
+
+    handleLoginAdmin: handleLoginAdmin,
 }

@@ -29,6 +29,7 @@ let initWebRoutes = (app) => {
 
   router.post("/api/save-document", userController.handleSaveDocument);
   router.get("/api/check-saved-document", userController.checkSavedDocument);
+  router.get("/api/get-all-saved-document", userController.getAllSavedDocument);
 
   //API Documents
   router.get("/api/get-list-documents", documentController.getListDocuments);
@@ -47,6 +48,8 @@ let initWebRoutes = (app) => {
   router.get("/api/get-doc-by-publisher", documentController.getDocumentByPublisher);
 
   //API Admin
+  router.post("/api/login-admin", adminController.handleLoginAdmin);
+
   router.get("/api/get-list-publisher", adminController.getListPublisher);
   router.get("/api/get-list-category", adminController.getListCategory);
   router.get("/api/get-list-author", adminController.getListAuthor);

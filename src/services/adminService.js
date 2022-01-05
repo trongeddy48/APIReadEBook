@@ -323,6 +323,53 @@ let deleteAuthor = (authorId) => {
     })
 }
 
+let handleLoginAdmin = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(
+                !data.username ||
+                !data.password
+            ) {
+                resolve({
+                  errCode: 1,
+                  errMessage: "Invalid data",
+                });
+            } else {
+                let roleAdmin = await db.User.findOne({
+                    where: {
+                        username: data.username,
+                        password: data.password
+                    },
+                    attributes: {
+                        exclude: ['password']
+                    }
+                });
+                if(roleAdmin != null){
+                    if(roleAdmin.roleUser == 'admin') {
+                        resolve({
+                            errCode: 0,
+                            errMessage: 'Ok',
+                            roleAdmin,
+                        });
+                    }else {
+                        resolve({
+                            errCode: 2,
+                            errMessage: 'Invalid username or password',
+                        });
+                    }
+                }else {
+                    resolve({
+                        errCode: 3,
+                        errMessage: 'Not account admin',
+                    });
+                }
+            }
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     getListPublisher: getListPublisher,
     getListCategory: getListCategory,
@@ -336,4 +383,6 @@ module.exports = {
     deletePublisher: deletePublisher,
     deleteCategory: deleteCategory,
     deleteAuthor: deleteAuthor,
+
+    handleLoginAdmin: handleLoginAdmin,
 }

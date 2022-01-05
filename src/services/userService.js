@@ -413,6 +413,34 @@ let checkSavedDocument = (documentId, userId) => {
   });
 }
 
+let getAllSavedDocument = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    let savedDoc = await db.Savedoc.findAll({
+      where: { userId: userId },
+      attributes: ["documentId"],
+      include: [{
+        model: db.Document,
+        required: true,
+        as: "documentData",
+        attributes: ["id", "nameDocument","pageNumber", "imageDocument"],
+
+        include: [{
+          model: db.Author,
+          required: true,
+          as: "authorData",
+          attributes: ["nameAuthor"],
+        }],
+      }],
+      raw: true,
+      nest: true,
+    });
+    resolve({
+      errCode: 0,
+      message: savedDoc,
+    });
+  });
+}
+
 module.exports = {
   handleLogin: handleLogin,
   handleSignup: handleSignup,
@@ -432,4 +460,5 @@ module.exports = {
 
   handleSaveDocument: handleSaveDocument,
   checkSavedDocument: checkSavedDocument,
+  getAllSavedDocument: getAllSavedDocument,
 };
