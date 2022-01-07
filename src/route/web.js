@@ -39,6 +39,8 @@ let initWebRoutes = (app) => {
   router.put("/api/edit-document", documentController.editDocument);
   router.delete("/api/delete-document", documentController.deleteDocument);
 
+  router.get("/api/get-document-by-order", documentController.getDocumentByOrder);
+
   router.get("/api/get-info-category", documentController.getInfoCategory);
   router.get("/api/get-info-author", documentController.getInfoAuthor);
   router.get("/api/get-info-pubslisher", documentController.getInfoPublisher);

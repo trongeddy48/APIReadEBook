@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       publisherId: DataTypes.INTEGER,
       authorId: DataTypes.INTEGER,
       categoryId: DataTypes.INTEGER,
+      createdAt: DataTypes.DATE,
     },
     {
       sequelize,

@@ -173,6 +173,13 @@ let getInfoPublisher = async (req, res) => {
   }
 }
 
+let getDocumentByOrder = async (req, res) => {
+  let listDocsByOrder = await documentService.getDocumentByOrder();
+    return res.send({
+      listDocsByOrder,
+    });
+}
+
 module.exports = {
   getDocumentById: getDocumentById,
   getListDocuments: getListDocuments,
@@ -187,4 +194,5 @@ module.exports = {
   getInfoCategory: getInfoCategory,
   getInfoAuthor: getInfoAuthor,
   getInfoPublisher: getInfoPublisher,
+  getDocumentByOrder: getDocumentByOrder,
 };

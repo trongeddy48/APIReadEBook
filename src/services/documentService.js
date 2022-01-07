@@ -415,6 +415,62 @@ let getInfoPublisher = (publisherId) => {
   });
 };
 
+let getDocumentByOrder = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let docsByOrder = await db.Document.findAll({
+        where:
+          db.Document.publisherId == db.Publisher.id &&
+          db.authorId == db.Author.id &&
+          db.categoryId == db.Category.id,
+
+        order: [
+            ['createdAt', 'DESC'],
+        ], 
+
+        attributes: [
+          "id",
+          "nameDocument",
+          "pageNumber",
+          "imageDocument",
+          "publisherId",
+          "authorId",
+          "categoryId",
+        ],
+
+        include: [
+          {
+            model: db.Publisher,
+            required: true,
+            as: "publisherData",
+            attributes: ["namePublisher"],
+            // where: db.Document.publisherId == db.Publisher.id,
+          },
+          {
+            model: db.Author,
+            required: true,
+            as: "authorData",
+            attributes: ["nameAuthor"],
+            // where: db.Document.authorId == db.Author.id,
+          },
+          {
+            model: db.Category,
+            required: true,
+            as: "categoryData",
+            attributes: ["nameCategory"],
+            // where: db.Document.categoryId == db.Category.id,
+          },
+        ],
+        raw: true,
+        nest: true,
+      });
+      resolve(docsByOrder);
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 module.exports = {
   getDocumentById: getDocumentById,
   getListDocuments: getListDocuments,
@@ -429,4 +485,5 @@ module.exports = {
   getInfoCategory: getInfoCategory,
   getInfoAuthor: getInfoAuthor,
   getInfoPublisher: getInfoPublisher,
+  getDocumentByOrder: getDocumentByOrder,
 };
